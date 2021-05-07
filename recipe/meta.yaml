@@ -38,8 +38,8 @@ source:
     folder: opencv_contrib
 
 build:
-  number: 1
-  string: py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }}
+  number: 2
+  string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
     # Things seem to change every patch versions, mostly the dnn module
@@ -99,8 +99,8 @@ outputs:
   - name: libopencv
   - name: opencv
     build:
-      number: 1
-      string: py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }}
+      number: 2
+      string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
     requirements:
       run:
         - {{ pin_subpackage('libopencv', exact=True) }}
@@ -108,8 +108,8 @@ outputs:
 
   - name: py-opencv
     build:
-      number: 1
-      string: py{{ python | replace(".", "") }}_{{ PKG_BUILDNUM }}
+      number: 2
+      string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
       run_exports:
         # Should we even have this???
         # don't pin the python version so hard.
