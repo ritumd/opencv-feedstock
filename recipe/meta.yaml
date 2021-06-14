@@ -38,12 +38,15 @@ source:
     folder: opencv_contrib
 
 build:
-  number: 4
+  number: 5
   string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
     # Things seem to change every patch versions, mostly the dnn module
     - {{ pin_subpackage('libopencv', max_pin='x.x.x') }}
+  ignore_run_exports:
+    - libgcc-ng
+    - libstdcxx-ng
 
 requirements:
   build:
@@ -59,6 +62,9 @@ requirements:
     - {{ cdt('libxdamage') }}
     - {{ cdt('libxfixes') }}
     - {{ cdt('libxxf86vm') }}
+    # Use pins to control cos6/cos7 match
+    - libgcc-ng  {{ libgcc }}
+    - libstdcxx-ng  {{ libstdcxx }}
   host:
     - python {{python}} 
     - numpy {{numpy}}
@@ -77,6 +83,9 @@ requirements:
     - freetype {{freetype}}
     - protobuf {{ protobuf }}
     - libprotobuf {{ protobuf }}
+    # Use pins to control cos6/cos7 match
+    - libgcc-ng  {{ libgcc }}
+    - libstdcxx-ng  {{ libstdcxx }}
   run:
     # Don't depend on python in the run section
     # py-opencv will depend on python
@@ -94,21 +103,36 @@ requirements:
     # That or a dependency wasn't merged in
     # Since we don't know the cause, we are choosing this pinning on all platforms.
     - {{ pin_compatible('freetype', min_pin='x.x') }}
+    # Use pins to control cos6/cos7 match
+    - libgcc-ng  {{ libgcc }}
+    - libstdcxx-ng  {{ libstdcxx }}
 
 outputs:
   - name: libopencv
   - name: opencv
     build:
-      number: 3
+      number: 4
       string: py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
     requirements:
+      build:
+        # Use pins to control cos6/cos7 match
+        - libgcc-ng  {{ libgcc }}
+        - libstdcxx-ng  {{ libstdcxx }}
+      host:
+        # Use pins to control cos6/cos7 match
+        - libgcc-ng  {{ libgcc }}
+        - libstdcxx-ng  {{ libstdcxx }}
+
       run:
         - {{ pin_subpackage('libopencv', exact=True) }}
         - {{ pin_subpackage('py-opencv', exact=True) }}
+        # Use pins to control cos6/cos7 match
+        - libgcc-ng  {{ libgcc }}
+        - libstdcxx-ng  {{ libstdcxx }}
 
   - name: py-opencv
     build:
-      number: 2
+      number: 3
       string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
       run_exports:
         # Should we even have this???
@@ -116,16 +140,30 @@ outputs:
         # Actually, I have found pretty good compatibility in the python
         # package
         - {{ pin_subpackage('py-opencv') }}
+      ignore_run_exports:
+        - libgcc-ng
+        - libstdcxx-ng
+
     requirements:
       # There is no build script, but I just want it to think
       # that it needs python and numpy at build time
+      build:
+        # Use pins to control cos6/cos7 match
+        - libgcc-ng  {{ libgcc }}
+        - libstdcxx-ng  {{ libstdcxx }}
       host:
         - python {{python}}
         - numpy {{numpy}}
+        # Use pins to control cos6/cos7 match
+        - libgcc-ng  {{ libgcc }}
+        - libstdcxx-ng  {{ libstdcxx }}
       run:
         - python {{python}}
         - {{ pin_compatible('numpy') }}
         - {{ pin_subpackage('libopencv', exact=True) }}
+        # Use pins to control cos6/cos7 match
+        - libgcc-ng  {{ libgcc }}
+        - libstdcxx-ng  {{ libstdcxx }}
 
 about:
   home: http://opencv.org/

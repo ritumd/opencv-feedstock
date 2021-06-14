@@ -86,7 +86,8 @@ cmake -LAH -G "Ninja"                                                     \
     -DENABLE_PRECOMPILED_HEADERS=OFF                                      \
     $CPU_DISPATCH_FLAGS                                                   \
     $OPENMP                                                               \
-    -DWITH_LAPACK=1                                                       \
+    -DWITH_LAPACK=0                                                       \
+    -DHAVE_LAPACK=0                                                       \
     -DLAPACK_LAPACKE_H=lapacke.h                                          \
     -DLAPACK_CBLAS_H=cblas.h                                              \
     -DWITH_EIGEN=1                                                        \
@@ -112,6 +113,7 @@ cmake -LAH -G "Ninja"                                                     \
     -DWITH_CARBON=0                                                       \
     -DWITH_OPENNI=0                                                       \
     -DWITH_FFMPEG=1                                                       \
+    -DHAVE_FFMPEG=1                                                       \
     -DWITH_GSTREAMER=0                                                    \
     -DWITH_MATLAB=0                                                       \
     -DWITH_VTK=0                                                          \
