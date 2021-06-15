@@ -38,7 +38,7 @@ source:
     folder: opencv_contrib
 
 build:
-  number: 5
+  number: 6
   string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
@@ -47,6 +47,7 @@ build:
   ignore_run_exports:
     - libgcc-ng
     - libstdcxx-ng
+    - libgfortran-ng
 
 requirements:
   build:
@@ -65,6 +66,7 @@ requirements:
     # Use pins to control cos6/cos7 match
     - libgcc-ng  {{ libgcc }}
     - libstdcxx-ng  {{ libstdcxx }}
+    - libgfortran-ng {{ libgfortran }}
   host:
     - python {{python}} 
     - numpy {{numpy}}
@@ -86,6 +88,7 @@ requirements:
     # Use pins to control cos6/cos7 match
     - libgcc-ng  {{ libgcc }}
     - libstdcxx-ng  {{ libstdcxx }}
+    - libgfortran-ng {{ libgfortran }}
   run:
     # Don't depend on python in the run section
     # py-opencv will depend on python
@@ -106,33 +109,36 @@ requirements:
     # Use pins to control cos6/cos7 match
     - libgcc-ng  {{ libgcc }}
     - libstdcxx-ng  {{ libstdcxx }}
+    - libgfortran-ng {{ libgfortran }}
 
 outputs:
   - name: libopencv
   - name: opencv
     build:
-      number: 4
+      number: 6
       string: py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
     requirements:
       build:
         # Use pins to control cos6/cos7 match
         - libgcc-ng  {{ libgcc }}
         - libstdcxx-ng  {{ libstdcxx }}
+        - libgfortran-ng {{ libgfortran }}
       host:
         # Use pins to control cos6/cos7 match
         - libgcc-ng  {{ libgcc }}
         - libstdcxx-ng  {{ libstdcxx }}
-
+        - libgfortran-ng {{ libgfortran }}
       run:
         - {{ pin_subpackage('libopencv', exact=True) }}
         - {{ pin_subpackage('py-opencv', exact=True) }}
         # Use pins to control cos6/cos7 match
         - libgcc-ng  {{ libgcc }}
         - libstdcxx-ng  {{ libstdcxx }}
+        - libgfortran-ng {{ libgfortran }}
 
   - name: py-opencv
     build:
-      number: 3
+      number: 6
       string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
       run_exports:
         # Should we even have this???
@@ -143,6 +149,7 @@ outputs:
       ignore_run_exports:
         - libgcc-ng
         - libstdcxx-ng
+        - libgfortran-ng
 
     requirements:
       # There is no build script, but I just want it to think
@@ -151,12 +158,14 @@ outputs:
         # Use pins to control cos6/cos7 match
         - libgcc-ng  {{ libgcc }}
         - libstdcxx-ng  {{ libstdcxx }}
+        - libgfortran-ng {{ libgfortran }}
       host:
         - python {{python}}
         - numpy {{numpy}}
         # Use pins to control cos6/cos7 match
         - libgcc-ng  {{ libgcc }}
         - libstdcxx-ng  {{ libstdcxx }}
+        - libgfortran-ng {{ libgfortran }}
       run:
         - python {{python}}
         - {{ pin_compatible('numpy') }}
@@ -164,6 +173,7 @@ outputs:
         # Use pins to control cos6/cos7 match
         - libgcc-ng  {{ libgcc }}
         - libstdcxx-ng  {{ libstdcxx }}
+        - libgfortran-ng {{ libgfortran }}
 
 about:
   home: http://opencv.org/
