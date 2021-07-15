@@ -38,16 +38,12 @@ source:
     folder: opencv_contrib
 
 build:
-  number: 6
+  number: 7
   string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
     # Things seem to change every patch versions, mostly the dnn module
     - {{ pin_subpackage('libopencv', max_pin='x.x.x') }}
-  ignore_run_exports:
-    - libgcc-ng
-    - libstdcxx-ng
-    - libgfortran-ng
 
 requirements:
   build:
@@ -106,16 +102,12 @@ requirements:
     # That or a dependency wasn't merged in
     # Since we don't know the cause, we are choosing this pinning on all platforms.
     - {{ pin_compatible('freetype', min_pin='x.x') }}
-    # Use pins to control cos6/cos7 match
-    - libgcc-ng  {{ libgcc }}
-    - libstdcxx-ng  {{ libstdcxx }}
-    - libgfortran-ng {{ libgfortran }}
 
 outputs:
   - name: libopencv
   - name: opencv
     build:
-      number: 6
+      number: 7
       string: py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
     requirements:
       build:
@@ -131,14 +123,10 @@ outputs:
       run:
         - {{ pin_subpackage('libopencv', exact=True) }}
         - {{ pin_subpackage('py-opencv', exact=True) }}
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}
-        - libstdcxx-ng  {{ libstdcxx }}
-        - libgfortran-ng {{ libgfortran }}
 
   - name: py-opencv
     build:
-      number: 6
+      number: 7
       string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
       run_exports:
         # Should we even have this???
@@ -146,10 +134,6 @@ outputs:
         # Actually, I have found pretty good compatibility in the python
         # package
         - {{ pin_subpackage('py-opencv') }}
-      ignore_run_exports:
-        - libgcc-ng
-        - libstdcxx-ng
-        - libgfortran-ng
 
     requirements:
       # There is no build script, but I just want it to think
@@ -170,10 +154,6 @@ outputs:
         - python {{python}}
         - {{ pin_compatible('numpy') }}
         - {{ pin_subpackage('libopencv', exact=True) }}
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}
-        - libstdcxx-ng  {{ libstdcxx }}
-        - libgfortran-ng {{ libgfortran }}
 
 about:
   home: http://opencv.org/
