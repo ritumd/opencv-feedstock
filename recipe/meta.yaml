@@ -38,7 +38,7 @@ source:
     folder: opencv_contrib
 
 build:
-  number: 7
+  number: 8
   string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
@@ -82,6 +82,7 @@ requirements:
     - protobuf {{ protobuf }}
     - libprotobuf {{ protobuf }}
     # Use pins to control cos6/cos7 match
+    - libidn2  2.3.1   #[x86_64]
     - libgcc-ng  {{ libgcc }}
     - libstdcxx-ng  {{ libstdcxx }}
     - libgfortran-ng {{ libgfortran }}
