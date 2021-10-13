@@ -38,7 +38,7 @@ source:
     folder: opencv_contrib
 
 build:
-  number: 8
+  number: 9
   string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
@@ -68,7 +68,7 @@ requirements:
     - numpy {{numpy}}
     - hdf5 {{hdf5}}
     - eigen {{eigen}}
-    - jasper {{jasper}}
+    - jasper {{jasper}} h07fcdf6_1
     - zlib {{zlib}}
     - jpeg {{jpeg}}
     - libtiff {{libtiff}}
