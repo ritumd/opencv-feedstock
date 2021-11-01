@@ -19,7 +19,7 @@
 #
 # By putting all the generated files in 1 package, this makes the build process
 # much easier, at the expense of a few MBs in the 'lib' package.
-{% set version = "3.4.14" %}
+{% set version = "3.4.16" %}
 {% set PY_VER_MAJOR = PY_VER[0] %}
 {% set PY_VER_MINOR = PY_VER[2] %}
 
@@ -34,11 +34,11 @@ source:
     git_tag: {{ version }}
   - url: https://github.com/opencv/opencv_contrib/archive/{{ version }}.tar.gz
     fn: opencv_contrib-{{ version }}.tar.gz
-    sha256: f8394bc68b70c57e54fc7706a4d2b7ef33e514c385f338c4cb470fe37d0dc243
+    sha256: 92b4f6ab8107e9de387bafc3c7658263e5c6be68554d6086b37a2cb168e332c5
     folder: opencv_contrib
 
 build:
-  number: 4
+  number: 1
   string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
@@ -59,17 +59,13 @@ requirements:
     - {{ cdt('libxdamage') }}
     - {{ cdt('libxfixes') }}
     - {{ cdt('libxxf86vm') }}
-    # Use pins to control cos6/cos7 match
-    - libgcc-ng  {{ libgcc }}                        # [x86_64 and c_compiler_version == "7.2.*"]
-    - libstdcxx-ng  {{ libstdcxx }}                  # [x86_64 and c_compiler_version == "7.2.*"]
-    - libgfortran-ng {{ libgfortran }}               # [x86_64 and c_compiler_version == "7.2.*"]
+
   host:
     - python {{python}} 
     - numpy {{numpy}}
     - hdf5 {{hdf5}}
     - eigen {{eigen}}
-    - jasper {{jasper}} h07fcdf6_1                   # [x86_64 and c_compiler_version == "7.2.*"]
-    - jasper {{jasper}}                              # [ppc64le or (x86_64 and c_compiler_version != "7.2.*")]
+    - jasper {{jasper}}
     - zlib {{zlib}}
     - jpeg {{jpeg}}
     - libtiff {{libtiff}}
@@ -82,11 +78,6 @@ requirements:
     - freetype {{freetype}}
     - protobuf {{ protobuf }}
     - libprotobuf {{ protobuf }}
-    # Use pins to control cos6/cos7 match
-    - libidn2  2.3.1                                 # [x86_64 and c_compiler_version == "7.2.*"]
-    - libgcc-ng  {{ libgcc }}                        # [x86_64 and c_compiler_version == "7.2.*"]
-    - libstdcxx-ng  {{ libstdcxx }}                  # [x86_64 and c_compiler_version == "7.2.*"]
-    - libgfortran-ng {{ libgfortran }}               # [x86_64 and c_compiler_version == "7.2.*"]
 
   run:
     # Don't depend on python in the run section
@@ -112,16 +103,6 @@ outputs:
     build:
       string: py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
     requirements:
-      build:
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}                        # [x86_64 and c_compiler_version == "7.2.*"]
-        - libstdcxx-ng  {{ libstdcxx }}                  # [x86_64 and c_compiler_version == "7.2.*"]
-        - libgfortran-ng {{ libgfortran }}               # [x86_64 and c_compiler_version == "7.2.*"]
-      host:
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}                        # [x86_64 and c_compiler_version == "7.2.*"]
-        - libstdcxx-ng  {{ libstdcxx }}                  # [x86_64 and c_compiler_version == "7.2.*"]
-        - libgfortran-ng {{ libgfortran }}               # [x86_64 and c_compiler_version == "7.2.*"]
       run:
         - {{ pin_subpackage('libopencv', exact=True) }}
         - {{ pin_subpackage('py-opencv', exact=True) }}
@@ -139,18 +120,9 @@ outputs:
     requirements:
       # There is no build script, but I just want it to think
       # that it needs python and numpy at build time
-      build:
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}                         # [x86_64 and c_compiler_version == "7.2.*"]
-        - libstdcxx-ng  {{ libstdcxx }}                   # [x86_64 and c_compiler_version == "7.2.*"]
-        - libgfortran-ng {{ libgfortran }}                # [x86_64 and c_compiler_version == "7.2.*"]
       host:
         - python {{python}}
         - numpy {{numpy}}
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}                         # [x86_64 and c_compiler_version == "7.2.*"]
-        - libstdcxx-ng  {{ libstdcxx }}                   # [x86_64 and c_compiler_version == "7.2.*"]
-        - libgfortran-ng {{ libgfortran }}                # [x86_64 and c_compiler_version == "7.2.*"]
       run:
         - python {{python}}
         - {{ pin_compatible('numpy') }}
