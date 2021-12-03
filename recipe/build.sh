@@ -28,7 +28,7 @@ export CXXFLAGS="$CXXFLAGS -D__STDC_CONSTANT_MACROS"
 export CPPFLAGS="${CPPFLAGS//-std=c++17/-std=c++11}"
 export CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
 
-export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib -lopenjp2"
 
 CMAKE_TOOLCHAIN_CMD_FLAGS=""
 CMAKE_TOOLCHAIN_CMD_FLAGS="${CMAKE_TOOLCHAIN_CMD_FLAGS} -DCMAKE_AR=${AR}"

@@ -59,10 +59,6 @@ requirements:
     - {{ cdt('libxdamage') }}
     - {{ cdt('libxfixes') }}
     - {{ cdt('libxxf86vm') }}
-    # Use pins to control cos6/cos7 match
-    - libgcc-ng  {{ libgcc }}                        # [x86_64 and c_compiler_version == "7.2.*"]
-    - libstdcxx-ng  {{ libstdcxx }}                  # [x86_64 and c_compiler_version == "7.2.*"]
-    - libgfortran-ng {{ libgfortran }}               # [x86_64 and c_compiler_version == "7.2.*"]
   host:
     - python {{python}} 
     - numpy {{numpy}}
@@ -71,6 +67,7 @@ requirements:
     - jasper {{jasper}}
     - zlib {{zlib}}
     - jpeg {{jpeg}}
+    - openjpeg 
     - libtiff {{libtiff}}
     - libwebp
     - harfbuzz {{harfbuzz}}
@@ -81,11 +78,6 @@ requirements:
     - freetype {{freetype}}
     - protobuf {{ protobuf }}
     - libprotobuf {{ protobuf }}
-    # Use pins to control cos6/cos7 match
-    - libidn2  2.3.1                                 # [x86_64 and c_compiler_version == "7.2.*"]
-    - libgcc-ng  {{ libgcc }}                        # [x86_64 and c_compiler_version == "7.2.*"]
-    - libstdcxx-ng  {{ libstdcxx }}                  # [x86_64 and c_compiler_version == "7.2.*"]
-    - libgfortran-ng {{ libgfortran }}               # [x86_64 and c_compiler_version == "7.2.*"]
 
   run:
     # Don't depend on python in the run section
@@ -94,6 +86,7 @@ requirements:
     - jasper                           # versioning handled by run_exports
     - zlib                             # versioning handled by run_exports
     - jpeg                             # versioning handled by run_exports
+    - openjpeg
     - libwebp
     - harfbuzz                         # versioning handled by run_exports
     - libtiff                          # versioning handled by run_exports
@@ -111,16 +104,6 @@ outputs:
     build:
       string: py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
     requirements:
-      build:
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}                        # [x86_64 and c_compiler_version == "7.2.*"]
-        - libstdcxx-ng  {{ libstdcxx }}                  # [x86_64 and c_compiler_version == "7.2.*"]
-        - libgfortran-ng {{ libgfortran }}               # [x86_64 and c_compiler_version == "7.2.*"]
-      host:
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}                        # [x86_64 and c_compiler_version == "7.2.*"]
-        - libstdcxx-ng  {{ libstdcxx }}                  # [x86_64 and c_compiler_version == "7.2.*"]
-        - libgfortran-ng {{ libgfortran }}               # [x86_64 and c_compiler_version == "7.2.*"]
       run:
         - {{ pin_subpackage('libopencv', exact=True) }}
         - {{ pin_subpackage('py-opencv', exact=True) }}
@@ -138,18 +121,9 @@ outputs:
     requirements:
       # There is no build script, but I just want it to think
       # that it needs python and numpy at build time
-      build:
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}                         # [x86_64 and c_compiler_version == "7.2.*"]
-        - libstdcxx-ng  {{ libstdcxx }}                   # [x86_64 and c_compiler_version == "7.2.*"]
-        - libgfortran-ng {{ libgfortran }}                # [x86_64 and c_compiler_version == "7.2.*"]
       host:
         - python {{python}}
         - numpy {{numpy}}
-        # Use pins to control cos6/cos7 match
-        - libgcc-ng  {{ libgcc }}                         # [x86_64 and c_compiler_version == "7.2.*"]
-        - libstdcxx-ng  {{ libstdcxx }}                   # [x86_64 and c_compiler_version == "7.2.*"]
-        - libgfortran-ng {{ libgfortran }}                # [x86_64 and c_compiler_version == "7.2.*"]
       run:
         - python {{python}}
         - {{ pin_compatible('numpy') }}
