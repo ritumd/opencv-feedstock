@@ -59,6 +59,7 @@ requirements:
     - {{ cdt('libxdamage') }}
     - {{ cdt('libxfixes') }}
     - {{ cdt('libxxf86vm') }}
+
   host:
     - python {{python}} 
     - numpy {{numpy}}
