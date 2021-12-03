@@ -28,7 +28,7 @@ export CXXFLAGS="$CXXFLAGS -D__STDC_CONSTANT_MACROS"
 export CPPFLAGS="${CPPFLAGS//-std=c++17/-std=c++11}"
 export CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
 
-export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib -lopenjp2"
 
 CMAKE_TOOLCHAIN_CMD_FLAGS=""
 CMAKE_TOOLCHAIN_CMD_FLAGS="${CMAKE_TOOLCHAIN_CMD_FLAGS} -DCMAKE_AR=${AR}"
@@ -113,7 +113,10 @@ cmake -LAH -G "Ninja"                                                     \
     -DWITH_CARBON=0                                                       \
     -DWITH_OPENNI=0                                                       \
     -DWITH_FFMPEG=1                                                       \
-    -DHAVE_FFMPEG=1                                                       \
+    -DHAVE_FFMPEG=0                                                       \
+    -DWITH_JASPER=0                                                      \
+    -DWITH_VA=0                                                           \
+    -DWITH_VA_INTEL=0                                                     \
     -DWITH_GSTREAMER=0                                                    \
     -DWITH_MATLAB=0                                                       \
     -DWITH_VTK=0                                                          \

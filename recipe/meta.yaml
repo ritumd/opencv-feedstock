@@ -19,7 +19,7 @@
 #
 # By putting all the generated files in 1 package, this makes the build process
 # much easier, at the expense of a few MBs in the 'lib' package.
-{% set version = "3.4.16" %}
+{% set version = "4.5.3" %}
 {% set PY_VER_MAJOR = PY_VER[0] %}
 {% set PY_VER_MINOR = PY_VER[2] %}
 
@@ -34,7 +34,7 @@ source:
     git_tag: {{ version }}
   - url: https://github.com/opencv/opencv_contrib/archive/{{ version }}.tar.gz
     fn: opencv_contrib-{{ version }}.tar.gz
-    sha256: 92b4f6ab8107e9de387bafc3c7658263e5c6be68554d6086b37a2cb168e332c5
+    sha256: 73da052fd10e73aaba2560eaff10cc5177e2dcc58b27f8aedf7c649e24c233bc
     folder: opencv_contrib
 
 build:
@@ -68,6 +68,7 @@ requirements:
     - jasper {{jasper}}
     - zlib {{zlib}}
     - jpeg {{jpeg}}
+    - openjpeg 
     - libtiff {{libtiff}}
     - libwebp
     - harfbuzz {{harfbuzz}}
@@ -86,6 +87,7 @@ requirements:
     - jasper                           # versioning handled by run_exports
     - zlib                             # versioning handled by run_exports
     - jpeg                             # versioning handled by run_exports
+    - openjpeg
     - libwebp
     - harfbuzz                         # versioning handled by run_exports
     - libtiff                          # versioning handled by run_exports
