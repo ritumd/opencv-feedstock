@@ -1,6 +1,6 @@
 #!/bin/bash
 # *****************************************************************
-# (C) Copyright IBM Corp. 2019, 2021. All Rights Reserved.
+# (C) Copyright IBM Corp. 2019, 2022. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,24 @@ export CXXFLAGS="$CXXFLAGS -D__STDC_CONSTANT_MACROS"
 export CPPFLAGS="${CPPFLAGS//-std=c++17/-std=c++11}"
 export CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
 
-export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib -lopenjp2"
+export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
+
+if [[ $ppc_arch == "p10" ]]
+then
+    if [[ -z "${GCC_10_HOME}" ]];
+    then
+        echo "Please set GCC_10_HOME to the install path of gcc-toolset-10"
+        exit 1
+    else
+        AR=${GCC_10_HOME}/bin/ar
+        LD=${GCC_10_HOME}/bin/ld
+        NM=${GCC_10_HOME}/bin/nm
+        OBJCOPY=${GCC_10_HOME}/bin/objcopy
+        OBJDUMP=${GCC_10_HOME}/bin/objdump
+        RANLIB=${GCC_10_HOME}/bin/ranlib
+        STRIP=${GCC_10_HOME}/bin/strip
+    fi
+fi
 
 CMAKE_TOOLCHAIN_CMD_FLAGS=""
 CMAKE_TOOLCHAIN_CMD_FLAGS="${CMAKE_TOOLCHAIN_CMD_FLAGS} -DCMAKE_AR=${AR}"
@@ -119,6 +136,7 @@ cmake -LAH -G "Ninja"                                                     \
     -DWITH_VA_INTEL=0                                                     \
     -DWITH_GSTREAMER=0                                                    \
     -DWITH_MATLAB=0                                                       \
+    -DWITH_TESSERACT=0                                                    \
     -DWITH_VTK=0                                                          \
     -DWITH_GTK=0                                                          \
     -DWITH_QT=0                                                         \
@@ -126,6 +144,7 @@ cmake -LAH -G "Ninja"                                                     \
     -DINSTALL_C_EXAMPLES=0                                                \
     -DOPENCV_EXTRA_MODULES_PATH="../opencv_contrib/modules"               \
     -DCMAKE_SKIP_RPATH:bool=ON                                            \
+    -DBUILD_opencv_sfm:bool=OFF                                           \
     -DPYTHON_PACKAGES_PATH=${SP_DIR}                                      \
     -DPYTHON_EXECUTABLE=${PYTHON}                                         \
     -DPYTHON_INCLUDE_DIR=${INC_PYTHON}                                    \

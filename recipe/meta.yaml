@@ -19,7 +19,7 @@
 #
 # By putting all the generated files in 1 package, this makes the build process
 # much easier, at the expense of a few MBs in the 'lib' package.
-{% set version = "4.5.3" %}
+{% set version = "4.5.5" %}
 {% set PY_VER_MAJOR = PY_VER[0] %}
 {% set PY_VER_MINOR = PY_VER[2] %}
 
@@ -34,16 +34,18 @@ source:
     git_tag: {{ version }}
   - url: https://github.com/opencv/opencv_contrib/archive/{{ version }}.tar.gz
     fn: opencv_contrib-{{ version }}.tar.gz
-    sha256: 73da052fd10e73aaba2560eaff10cc5177e2dcc58b27f8aedf7c649e24c233bc
+    sha256: a97c2eaecf7a23c6dbd119a609c6d7fae903e5f9ff5f1fe678933e01c67a6c11
     folder: opencv_contrib
 
 build:
-  number: 1
+  number: 2
   string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
     # Things seem to change every patch versions, mostly the dnn module
     - {{ pin_subpackage('libopencv', max_pin='x.x.x') }}
+  script_env:                      #[ppc_arch == "p10"]
+    - GCC_10_HOME                  #[ppc_arch == "p10"]
 
 requirements:
   build:
@@ -51,8 +53,8 @@ requirements:
     - pkg-config {{pkg_config}}
     - cmake {{cmake}}
     - ninja {{ninja}}
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}          #[ppc_arch != "p10"]
+    - {{ compiler('cxx') }}        #[ppc_arch != "p10"]
     - {{ cdt('mesa-libgl-devel') }}
     - {{ cdt('mesa-dri-drivers') }}
     - {{ cdt('libselinux') }}
@@ -74,8 +76,6 @@ requirements:
     - harfbuzz {{harfbuzz}}
     - libpng {{libpng}}
     - ffmpeg {{ffmpeg}}
-    - openblas-devel {{openblas}}
-    - libopenblas {{openblas}}
     - freetype {{freetype}}
     - protobuf {{ protobuf }}
     - libprotobuf {{ protobuf }}
@@ -105,6 +105,9 @@ outputs:
     build:
       string: py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
     requirements:
+      host:
+        - openblas-devel {{openblas}}
+        - libopenblas {{openblas}}
       run:
         - {{ pin_subpackage('libopencv', exact=True) }}
         - {{ pin_subpackage('py-opencv', exact=True) }}
@@ -129,11 +132,14 @@ outputs:
         - python {{python}}
         - {{ pin_compatible('numpy') }}
         - {{ pin_subpackage('libopencv', exact=True) }}
+    test:
+      imports:
+        - cv2 
 
 about:
   home: http://opencv.org/
-  license: BSD-3-Clause
-  license_family: BSD
+  license: Apache-2.0
+  license_family: Apache
   license_file: LICENSE
   summary: Computer vision and machine learning software library.
   description: Computer vision and machine learning software library.
