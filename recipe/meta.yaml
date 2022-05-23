@@ -38,14 +38,14 @@ source:
     folder: opencv_contrib
 
 build:
-  number: 2
+  number: 3
   string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
     # Things seem to change every patch versions, mostly the dnn module
     - {{ pin_subpackage('libopencv', max_pin='x.x.x') }}
   script_env:                      #[ppc_arch == "p10"]
-    - GCC_10_HOME                  #[ppc_arch == "p10"]
+    - GCC_11_HOME                  #[ppc_arch == "p10"]
 
 requirements:
   build:
