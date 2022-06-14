@@ -19,7 +19,7 @@
 #
 # By putting all the generated files in 1 package, this makes the build process
 # much easier, at the expense of a few MBs in the 'lib' package.
-{% set version = "4.5.5" %}
+{% set version = "4.6.0" %}
 {% set PY_VER_MAJOR = PY_VER[0] %}
 {% set PY_VER_MINOR = PY_VER[2] %}
 
@@ -34,18 +34,16 @@ source:
     git_tag: {{ version }}
   - url: https://github.com/opencv/opencv_contrib/archive/{{ version }}.tar.gz
     fn: opencv_contrib-{{ version }}.tar.gz
-    sha256: a97c2eaecf7a23c6dbd119a609c6d7fae903e5f9ff5f1fe678933e01c67a6c11
+    sha256: 1777d5fd2b59029cf537e5fd6f8aa68d707075822f90bde683fcde086f85f7a7
     folder: opencv_contrib
 
 build:
-  number: 3
+  number: 1
   string: h{{ PKG_HASH }}_py{{ python | replace(".", "") }}_pb{{ protobuf | replace(".*", "")}}_{{ PKG_BUILDNUM }}
   run_exports:
     # https://abi-laboratory.pro/index.php?view=timeline&l=opencv
     # Things seem to change every patch versions, mostly the dnn module
     - {{ pin_subpackage('libopencv', max_pin='x.x.x') }}
-  script_env:                      #[ppc_arch == "p10"]
-    - GCC_11_HOME                  #[ppc_arch == "p10"]
 
 requirements:
   build:
@@ -53,8 +51,8 @@ requirements:
     - pkg-config {{pkg_config}}
     - cmake {{cmake}}
     - ninja {{ninja}}
-    - {{ compiler('c') }}          #[ppc_arch != "p10"]
-    - {{ compiler('cxx') }}        #[ppc_arch != "p10"]
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
     - {{ cdt('mesa-libgl-devel') }}
     - {{ cdt('mesa-dri-drivers') }}
     - {{ cdt('libselinux') }}
@@ -99,6 +97,10 @@ requirements:
     # Since we don't know the cause, we are choosing this pinning on all platforms.
     - {{ pin_compatible('freetype', min_pin='x.x') }}
 
+  test:
+    requires:
+      - conda 4.12
+
 outputs:
   - name: libopencv
   - name: opencv
@@ -133,6 +135,8 @@ outputs:
         - {{ pin_compatible('numpy') }}
         - {{ pin_subpackage('libopencv', exact=True) }}
     test:
+      requires:
+        - conda 4.12
       imports:
         - cv2 
 
@@ -147,4 +151,5 @@ about:
 extra:
   recipe-maintainers:
     - open-ce/open-ce-dev-team
+
 

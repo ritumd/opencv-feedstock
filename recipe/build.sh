@@ -30,23 +30,6 @@ export CXXFLAGS="${CXXFLAGS//-std=c++17/-std=c++11}"
 
 export LDFLAGS="${LDFLAGS} -Wl,-rpath-link,${PREFIX}/lib"
 
-if [[ $ppc_arch == "p10" ]]
-then
-    if [[ -z "${GCC_11_HOME}" ]];
-    then
-        echo "Please set GCC_11_HOME to the install path of gcc-toolset-11"
-        exit 1
-    else
-        AR=${GCC_11_HOME}/bin/ar
-        LD=${GCC_11_HOME}/bin/ld
-        NM=${GCC_11_HOME}/bin/nm
-        OBJCOPY=${GCC_11_HOME}/bin/objcopy
-        OBJDUMP=${GCC_11_HOME}/bin/objdump
-        RANLIB=${GCC_11_HOME}/bin/ranlib
-        STRIP=${GCC_11_HOME}/bin/strip
-    fi
-fi
-
 CMAKE_TOOLCHAIN_CMD_FLAGS=""
 CMAKE_TOOLCHAIN_CMD_FLAGS="${CMAKE_TOOLCHAIN_CMD_FLAGS} -DCMAKE_AR=${AR}"
 CMAKE_TOOLCHAIN_CMD_FLAGS="${CMAKE_TOOLCHAIN_CMD_FLAGS} -DCMAKE_LINKER=${LD}"
